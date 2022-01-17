@@ -6,9 +6,9 @@ const Connection = {
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     server: process.env.DB_SERVER,
-    port: 1433,
+    port: parseInt(process.env.DB_PORT),
     database: process.env.DB_DATABASE,
-    connectionTimeout: 30000,
+    connectionTimeout: parseInt(process.env.DB_TIMEOUT),
     parseJSON: true,
     options: {
         encrypt: false
