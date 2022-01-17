@@ -8,6 +8,7 @@ class sqlContext
     {
         //create a pool
         let pool = new mssql.ConnectionPool(Connection);
+        
         let result = null;
         let request = null;
     

@@ -4,7 +4,7 @@ const { GetUser, ListUser } = require('../Controllers/UsersController')
 
 //define routes from user
 Router.get("/GetUser", GetUser);
-Router.get("/ListUser", ListUser);
+Router.get("/ListUsers", ListUser);
 
 
 
