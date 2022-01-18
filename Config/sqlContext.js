@@ -1,13 +1,15 @@
 const mssql = require('mssql');
 const { Connection } = require('./Keys');
 
+//class that allow the execution of query from sql server database
 class sqlContext
 {
 
+    //get data using a simple common sql as select or stored procedure
     async GetData(query)
     {
         //create a pool
-        let pool = new mssql.ConnectionPool(Connection);
+        let pool = await new mssql.ConnectionPool(Connection);
         
         let result = null;
         let request = null;
@@ -35,6 +37,7 @@ class sqlContext
     }
 }
 
+//export context
 const Context = new sqlContext();
 module.exports = Context;
 

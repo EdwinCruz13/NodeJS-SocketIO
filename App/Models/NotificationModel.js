@@ -1,8 +1,9 @@
 const sqlContext = require('../../Config/sqlContext');
 
 
-//
-class NotificacionModel{
+//create a class that allowed to get the information
+//and validate the request and response
+class NotificationModel{
     async GetAll() {
        const list = await sqlContext.GetData('EXEC spr_Notificacion');
        return list?.recordset;
@@ -10,7 +11,7 @@ class NotificacionModel{
 }
 
 
-const Model = new NotificacionModel();
+const Model = new NotificationModel();
 module.exports = Model;
 
 
