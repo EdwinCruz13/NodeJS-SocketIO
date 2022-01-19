@@ -1,17 +1,28 @@
 //Imports
-require('dotenv').config(); //execute global variable
-const Express = require('express'); //require express server
-const Cors = require('cors');
+//execute global variable
+require('dotenv').config(); 
+//require express server
+const Express = require('express'); 
+//require socket.io
+const SocketIO = require('socket.io');  
+//require cors as middleware
+const Cors = require('cors'); 
 
-//Class of Application
+
+
+/**
+ * Summarize: Class that execute the app
+ */
 class ApplicationMain
 {
     //Properties
     Port
     Server 
 
-    //constructor that charge every configuration
-    //and variables
+    /**
+     * constructor that charge every configuration
+       and variables
+    */
     constructor()
     {
         //Load Configuration
@@ -24,26 +35,41 @@ class ApplicationMain
         this.LoadRoutes();
     }
 
-    //Initialize the webserve
+    /**
+     * Initialize the webserver
+     */
     Initialize()
     {
-        //execute server
-        this.Server.listen(this.Port, () => {
+
+        //execute server as WebServer
+        const WebServer = this.Server.listen(this.Port, () => {
             console.log(`Server executed on port ${this.Port}`);
-        })
+        });
+
+        //Execute websocket
+        //const io = SocketIO(WebServer); 
+
+        //open websocket
+        SocketIO(WebServer).on('connection', (socket) => {
+            console.log(`New connection using socketIO with ID ${socket.id} :) `);
+        });
     }
 
 
-    //Load some configuration as routes, views,
-    //public files and public folders
+    /**
+     * Load some configuration as routes, views,
+       public files and public folders
+     */
     LoadConfiguration()
     {
         this.Port = process.env.PORT || 3000;
         this.Server = Express();
     }
 
-    //Load Primary Middleware that allow execute
-    //some enviroments
+    /**
+     * Load Primary Middleware that allow execute
+       some enviroments
+     */
     LoadMiddleware()
     {
         //Define middleware
@@ -51,7 +77,9 @@ class ApplicationMain
         this.Server.use(Express.json());
     }
 
-    //Load routes that existed througt the project
+    /**
+     * Load routes that existed througt the project
+     */
     LoadRoutes()
     {
         //Define routes
@@ -59,6 +87,7 @@ class ApplicationMain
     }
 }
 
+//execute the application
 const app = new ApplicationMain();
 app.Initialize();
 

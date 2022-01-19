@@ -5,7 +5,11 @@ const { Connection } = require('./Keys');
 class sqlContext
 {
 
-    //get data using a simple common sql as select or stored procedure
+    /**
+     * Summarize: get data using a simple common sql as select or stored procedure
+     * @param {SQL String to execute} query 
+     * @returns resulted that get from the execution
+     */
     async GetData(query)
     {
         //create a pool

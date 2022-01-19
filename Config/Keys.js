@@ -1,7 +1,9 @@
 require('dotenv').config(); //bring config file
 const mssql = require('mssql');
 
-
+/**
+ * Get the DB Connection
+ */
 const Connection = {
     user: process.env.DB_USER,
     password: process.env.DB_PASS,

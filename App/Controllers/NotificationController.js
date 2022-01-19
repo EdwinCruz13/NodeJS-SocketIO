@@ -2,12 +2,17 @@
 const {request, response} = require('express');
 const NotificationModel = require('../Models/NotificationModel');
 
-
-//create controllers
+/**
+ * Summary: Create notification controller class
+ */
 class NotificacionController
 {
     
-    //List of notification
+    /**
+     * Summarize: List of notification
+     * @param {request from url} req 
+     * @param {response to url} res 
+     */
     async ListNotification(req, res)
     {
         //get list
@@ -15,7 +20,11 @@ class NotificacionController
         res.send(list);
     }
 
-    //get a specific notificacion
+    /**
+     * Summarize: get a specific notificacion
+     * @param {request from url} req 
+     * @param {response to url} res 
+     */
     GetNotification(req, res)
     {
         res.send("here");
