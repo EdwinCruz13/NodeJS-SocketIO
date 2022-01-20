@@ -1,5 +1,4 @@
 require('dotenv').config(); //bring config file
-const mssql = require('mssql');
 
 /**
  * Get the DB Connection
