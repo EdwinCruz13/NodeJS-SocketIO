@@ -16,4 +16,5 @@ const Connection = {
     },
 }
 
+console.log(`DB ${Connection.database} connected on ${Connection.port}`);
 module.exports = { Connection }

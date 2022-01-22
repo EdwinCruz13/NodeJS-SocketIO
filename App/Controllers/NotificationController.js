@@ -16,9 +16,36 @@ class NotificacionController
     async ListNotification(req, res)
     {
         //get list
-        const list = await NotificationModel.GetAll();
-        res.send(list);
+        res.render('./Notification/List');
     }
+
+    /**
+     * get the list of notification of the year
+     * execute a stored procedure and get the amount of year
+     * @param {*} req 
+     * @param {*} res 
+     */
+    async ListNotificationGet(req, res)
+    {
+        const list = await NotificationModel.GetAll();
+
+        //run through the result from list and become into array
+        const result = [];
+        for (let index = 0; index < list.length; ++index) {
+            const element = list[index];
+            result.push(element.amount);
+        }
+
+        //declare a object
+        const jsonString = {
+            name: list[0].year,
+            data: result
+        }
+
+        res.json(jsonString);
+    }
+
+
 
     /**
      * Summarize: get a specific notificacion
