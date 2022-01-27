@@ -15,6 +15,10 @@ const Cors = require('cors');
 const exphbs = require('express-handlebars');
 
 
+const ModelData = require('./App/Models/NotificationModel');
+let year = 0;
+
+
 
 /**
  * Summarize: Class that execute the app
@@ -42,14 +46,20 @@ class ApplicationMain
 
         //Load the routes
         this.LoadRoutes();
+
     }
+
+
+    
 
     /**
      * Initialize the webserver
      */
-    Initialize()
+    async Initialize()
     {
-
+        let result;
+        
+        
         //define public folder
         const folder = path.join(__dirname, 'App', 'views', 'Public');
         this.Server.use('/public', Express.static(folder));
@@ -60,14 +70,39 @@ class ApplicationMain
         });
         
         //open websocket
-        SocketIO(WebServer).on('connection', (socket) => {
+        SocketIO(WebServer).on('connection',  (socket) => {
             console.log(`New connection with socketIO with ID ${socket.id} :) `);
 
-            //get the information from client
-            socket.on('reload:cliente',  function (data){
-                //emit information to client
-                socket.emit('reload:server', "Hello to you!");
+            socket.on('reload:client', function(data){
+                setInterval(async () =>  {
+
+                    result = await loaddata();
+                    socket.volatile.emit('reload:server', result, year);
+
+
+
+
+
+
+                    //internal function that load all the data
+                    async function loaddata(){
+                        const list =  await ModelData.GetAll();
+                        let result = [];
+
+                        for (let index = 0; index < list.length; ++index) 
+                        {
+                            const element = list[index];
+                            result.push(element.amount);
+                            year = element.year;
+                        }
+
+                        return result;
+                    }
+                }, 3000)
+
+                
             });
+
         });
 
         

@@ -1,8 +1,9 @@
 const socket = io();
-const request = requestData();
+let request = requestData();
+let chart;
 
 function loadchart() {
-    Highcharts.chart('container', {
+    chart = new Highcharts.chart('container', {
 
         chart: {
          type: 'line',
@@ -81,10 +82,32 @@ function requestData() {
     return result;
 }
 
-//emit information to server
-socket.emit('reload:cliente', "hellos" );
+//function that rendering the chart
+function Heartbeating(){
+
+    socket.emit('reload:client', "charge data" );
+    //execute every seconds
+    /*setInterval(() => {
+        //emit information to server
+        socket.emit('reload:client', "charge data" );
+    }, 1000)*/
+}
+
+
 //get information from server
-socket.on('reload:server', function (data) {
-    alert(data);
+socket.on('reload:server', function (data, year) {
+    request = data;
+
+    console.log(new Date().toDateString() + '=>' + request + ':' + year.toString());
+
+    chart.series[0].update({
+        name: year,
+        data: request
+    }, true); 
+
+
 });
+
+
 loadchart();
+Heartbeating();
