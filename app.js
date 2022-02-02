@@ -14,8 +14,11 @@ const Cors = require('cors');
 //require the engine templating handlebars
 const exphbs = require('express-handlebars');
 
+const moment = require('moment');
+
 
 const ModelData = require('./App/Models/NotificationModel');
+const LoanModel = require('./App/Models/LoanModel');
 let year = 0;
 
 
@@ -57,7 +60,8 @@ class ApplicationMain
      */
     async Initialize()
     {
-        let result;
+        let result = [];
+        let resultBefore = [];
         
         
         //define public folder
@@ -76,13 +80,33 @@ class ApplicationMain
             socket.on('reload:client', function(data){
                 setInterval(async () =>  {
 
-                    result = await loaddata();
+                    
+                    let date = moment(Date.now()).format('DD/MM/YYYY HH:mm:ss');
+                    result = await loadLoan();
+                   
+
+                   
+                    
+
+
+                    //emitir resultados
                     socket.volatile.emit('reload:server', result, year);
+                    console.log(`Socket event loaded at ${date}`);
 
 
 
+                    async function loadLoan(){
+                        const list = await LoanModel.GetAmount();
 
-
+                        //run through the result from list and become into array
+                        const result = [];
+                        for (let index = 0; index < list.length; ++index) {
+                            year = 2022;
+                            const element = list[index];
+                            result.push({name: list[index].TipoPrestamo, y: list[index].Desembolsado});
+                        }
+                        return result;
+                    }
 
                     //internal function that load all the data
                     async function loaddata(){
@@ -98,7 +122,9 @@ class ApplicationMain
 
                         return result;
                     }
-                }, 3000)
+
+
+                }, 1000)
 
                 
             });
@@ -160,6 +186,7 @@ class ApplicationMain
         //Define routes
         //this.Server.use("/", require('./App/Routes/main.js'));
         this.Server.use("/Notification", require('./App/Routes/NotificationRoutes'));
+        this.Server.use("/Loan", require('./App/Routes/LoanRoutes'));
     }
 }
 
